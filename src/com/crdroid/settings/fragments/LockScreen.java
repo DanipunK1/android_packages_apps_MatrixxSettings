@@ -84,6 +84,8 @@ public class LockScreen extends SettingsPreferenceFragment
     private static final String CUSTOM_FP_FILE_SELECT = "custom_fp_file_select";
     private static final int REQUEST_PICK_IMAGE = 0;
     private static final String LOCKSCREEN_MAX_NOTIF_CONFIG = "lockscreen_max_notif_cofig";
+    private static final String KEY_FP_SUCCESS_VIBRATE = "fp_success_vibrate";
+    private static final String KEY_FP_ERROR_VIBRATE = "fp_error_vibrate";
 
     private Preference mUdfpsAnimations;
     private Preference mUdfpsIcons;
@@ -95,6 +97,8 @@ public class LockScreen extends SettingsPreferenceFragment
     private Preference mCustomFPImage;
     private SystemSettingSwitchPreference mCustomFodIcon;
     private CustomSeekBarPreference mMaxKeyguardNotifConfig;
+    private Preference mFingerprintVib;
+    private Preference mFingerprintVibErr;
 
     private OmniJawsClient mWeatherClient;
 
@@ -116,6 +120,8 @@ public class LockScreen extends SettingsPreferenceFragment
         mUdfpsAnimations = (Preference) findPreference(KEY_UDFPS_ANIMATIONS);
         mUdfpsIcons = (Preference) findPreference(KEY_UDFPS_ICONS);
         mRippleEffect = (Preference) findPreference(KEY_RIPPLE_EFFECT);
+        mFingerprintVib = (Preference) findPreference(KEY_FP_SUCCESS_VIBRATE);
+        mFingerprintVibErr = (Preference) findPreference(KEY_FP_ERROR_VIBRATE);
         mScreenOffUdfps = (Preference) findPreference(SCREEN_OFF_UDFPS_ENABLED);
 
         mCustomFPImage = findPreference(CUSTOM_FP_FILE_SELECT);
@@ -139,6 +145,8 @@ public class LockScreen extends SettingsPreferenceFragment
             gestCategory.removePreference(mUdfpsAnimations);
             gestCategory.removePreference(mUdfpsIcons);
             gestCategory.removePreference(mRippleEffect);
+            gestCategory.removePreference(mFingerprintVib);
+            gestCategory.removePreference(mFingerprintVibErr);
             gestCategory.removePreference(mScreenOffUdfps);
             gestCategory.removePreference(mCustomFPImage);
             gestCategory.removePreference(mCustomFodIcon);
@@ -280,6 +288,10 @@ public class LockScreen extends SettingsPreferenceFragment
         Settings.System.putIntForUser(resolver,
                 Settings.System.ENABLE_RIPPLE_EFFECT, 1, UserHandle.USER_CURRENT);
         Settings.System.putIntForUser(resolver,
+                Settings.System.FP_ERROR_VIBRATE, 1, UserHandle.USER_CURRENT);
+        Settings.System.putIntForUser(resolver,
+                Settings.System.FP_SUCCESS_VIBRATE, 1, UserHandle.USER_CURRENT);
+        Settings.System.putIntForUser(resolver,
                 Settings.System.LOCKSCREEN_ENABLE_POWER_MENU, 1, UserHandle.USER_CURRENT);
         Settings.System.putIntForUser(resolver,
                 Settings.System.LOCKSCREEN_WEATHER_ENABLED, 0, UserHandle.USER_CURRENT);
@@ -328,6 +340,8 @@ public class LockScreen extends SettingsPreferenceFragment
                         keys.add(KEY_UDFPS_ANIMATIONS);
                         keys.add(KEY_UDFPS_ICONS);
                         keys.add(KEY_RIPPLE_EFFECT);
+                        keys.add(KEY_FP_SUCCESS_VIBRATE);
+                        keys.add(KEY_FP_ERROR_VIBRATE);
                         keys.add(SCREEN_OFF_UDFPS_ENABLED);
                     } else {
                         if (!Utils.isPackageInstalled(context, "com.crdroid.udfps.animations")) {
